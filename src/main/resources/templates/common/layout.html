@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thmeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Blog</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+    <th:block layout:fragment="content"></th:block>
+    <footer>
+        <p>&copy; 2025 Personal Blog. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
