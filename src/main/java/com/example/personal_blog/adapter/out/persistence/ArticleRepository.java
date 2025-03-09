@@ -12,6 +12,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * 記事データを読み込むためのリポジトリクラス。
+ */
 @Repository
 public class ArticleRepository implements LoadArticlePort {
 
@@ -19,14 +22,25 @@ public class ArticleRepository implements LoadArticlePort {
     private final ArticleMapper articleMapper;
     private final ObjectMapper objectMapper;
 
+    /**
+     * ArticleRepositoryのコンストラクタ。
+     *
+     * @param objectMapper  JSONデータをマッピングするためのObjectMapper
+     * @param articleMapper ArticleJsonEntityをArticleに変換するためのArticleMapper
+     */
     public ArticleRepository(ObjectMapper objectMapper, ArticleMapper articleMapper) {
         this.objectMapper = objectMapper;
         this.articleMapper = articleMapper;
     }
 
+    /**
+     * data.jsonファイルからすべての記事を読み込み、Articleオブジェクトのリストを返します。
+     *
+     * @return 記事のリスト
+     * @throws RuntimeException data.jsonファイルの読み込み中にエラーが発生した場合
+     */
     public List<Article> findAll() {
         try {
-
             byte[] jsonData = Files.readAllBytes(Paths.get(JSON_FILE_PATH));
 
             List<ArticleJsonEntity> articleJsonEntities = objectMapper.readValue(jsonData,
@@ -40,6 +54,5 @@ public class ArticleRepository implements LoadArticlePort {
         } catch (IOException e) {
             throw new RuntimeException("Error reading data.json file", e);
         }
-
     }
 }
