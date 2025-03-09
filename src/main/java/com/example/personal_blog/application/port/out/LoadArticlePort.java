@@ -6,4 +6,6 @@ import com.example.personal_blog.application.domain.model.Article;
 
 public interface LoadArticlePort {
     List<Article> findAll();
+
+    Article findById(int id);
 }

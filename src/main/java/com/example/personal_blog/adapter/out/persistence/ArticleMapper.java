@@ -20,6 +20,7 @@ public class ArticleMapper {
      */
     public ArticleJsonEntity toArticleJsonEntity(Article article) {
         return new ArticleJsonEntity(
+                Integer.toString(article.id()),
                 article.title(),
                 article.writeDate().toString(),
                 article.content());
@@ -33,6 +34,7 @@ public class ArticleMapper {
      */
     public Article toArticle(ArticleJsonEntity articleJsonEntity) {
         return new Article(
+                Integer.parseInt(articleJsonEntity.id()),
                 articleJsonEntity.title(),
                 LocalDate.parse(articleJsonEntity.writeDate()),
                 articleJsonEntity.content());

@@ -21,4 +21,9 @@ public class GetArticleService implements GetArticleUseCase {
         return loadArticlePort.findAll();
     }
 
+    @Override
+    public Article getArticle(int id) {
+        return loadArticlePort.findById(id);
+    }
+
 }

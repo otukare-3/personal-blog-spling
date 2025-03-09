@@ -3,6 +3,7 @@ package com.example.personal_blog.adapter.in.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.personal_blog.application.port.in.GetArticleUseCase;
@@ -31,6 +32,14 @@ public class HomeController {
     public String index(Model model) {
         model.addAttribute("articles", getArticleUseCase.getArticles());
         return "index";
+    }
+
+    @GetMapping("/article/{id}")
+    public String detail(
+            @PathVariable String id,
+            Model model) {
+        model.addAttribute("article", getArticleUseCase.getArticle(Integer.parseInt(id)));
+        return "detail";
     }
 
 }

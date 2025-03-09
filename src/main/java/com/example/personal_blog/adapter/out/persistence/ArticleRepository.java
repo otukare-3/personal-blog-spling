@@ -55,4 +55,12 @@ public class ArticleRepository implements LoadArticlePort {
             throw new RuntimeException("Error reading data.json file", e);
         }
     }
+
+    @Override
+    public Article findById(int id) {
+        return findAll().stream()
+                .filter(article -> article.id() == id)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Article not found"));
+    }
 }

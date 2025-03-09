@@ -6,4 +6,6 @@ import com.example.personal_blog.application.domain.model.Article;
 
 public interface GetArticleUseCase {
     List<Article> getArticles();
+
+    Article getArticle(int id);
 }
