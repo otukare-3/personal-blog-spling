@@ -1,0 +1,17 @@
+[
+    {
+        "title": "My First Article",
+        "writeDate": "2024-08-01",
+        "content": "This is the content of my first article.\nIt contains multiple lines of text.\nHere is another line."
+    },
+    {
+        "title": "Second Article",
+        "writeDate": "2024-08-04",
+        "content": "This is the content of my second article.\nIt also contains multiple lines of text.\nHere is yet another line."
+    },
+    {
+        "title": "Third Article",
+        "writeDate": "2024-08-10",
+        "content": "This is the content of my third article.\nIt includes several lines of text as well.\nHere is one more line."
+    }
+]

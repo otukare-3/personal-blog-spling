@@ -1,38 +1,27 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html xmlns:th="http://www.thmeleaf.org" lang="ja">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Blog</title>
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 
 <body>
     <header>
-        <h1>Welcome to My Personal Blog</h1>
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/about">About</a></li>
-                <li><a href="/contact">Contact</a></li>
             </ul>
         </nav>
     </header>
     <main>
-        <section>
-            <h2>Latest Posts</h2>
-            <article>
-                <h3>Post Title 1</h3>
-                <p>Post summary 1...</p>
-                <a href="/post/1">Read more</a>
-            </article>
-            <article>
-                <h3>Post Title 2</h3>
-                <p>Post summary 2...</p>
-                <a href="/post/2">Read more</a>
-            </article>
-            <!-- Add more posts as needed -->
-        </section>
+        <h1>Personal Blog</h1>
+        <div class="grid-container" th:each="article : ${articles}">
+            <span class="grid-item" th:text="${article.title}">My first article</span>
+            <span class="grid-item grid-item__date" th:text="${article.writeDate}"></span>
+        </div>
     </main>
     <footer>
         <p>&copy; 2025 Personal Blog. All rights reserved.</p>
