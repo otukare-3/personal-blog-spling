@@ -5,8 +5,6 @@ import com.example.personal_blog.application.port.out.LoadArticlePort;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
