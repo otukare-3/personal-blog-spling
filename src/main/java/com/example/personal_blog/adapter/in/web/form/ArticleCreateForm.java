@@ -1,7 +1,9 @@
 package com.example.personal_blog.adapter.in.web.form;
 
+import jakarta.validation.constraints.NotEmpty;
+
 public record ArticleCreateForm(
-        String title,
-        String writeDate,
-        String content) {
+                @NotEmpty String title,
+                @NotEmpty String writeDate,
+                @NotEmpty String content) {
 }

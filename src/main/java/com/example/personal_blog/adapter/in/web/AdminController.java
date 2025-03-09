@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import com.example.personal_blog.application.port.in.CreateArticleCommand;
 import com.example.personal_blog.application.port.in.CreateArticleUseCase;
 import com.example.personal_blog.application.port.in.GetArticleUseCase;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -37,7 +39,11 @@ public class AdminController {
     }
 
     @PostMapping("/new")
-    public String createArticle(ArticleCreateForm articleCreateForm) {
+    public String createArticle(@Valid ArticleCreateForm articleCreateForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "admin/new";
+        }
+
         CreateArticleCommand command = new CreateArticleCommand(
                 articleCreateForm.title(),
                 LocalDate.parse(articleCreateForm.writeDate()),
