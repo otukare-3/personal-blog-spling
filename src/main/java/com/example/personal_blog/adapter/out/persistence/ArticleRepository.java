@@ -1,6 +1,7 @@
 package com.example.personal_blog.adapter.out.persistence;
 
 import com.example.personal_blog.application.domain.model.Article;
+import com.example.personal_blog.application.port.out.CreateArticlePort;
 import com.example.personal_blog.application.port.out.LoadArticlePort;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,12 +12,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * 記事データを読み込むためのリポジトリクラス。
  */
 @Repository
-public class ArticleRepository implements LoadArticlePort {
+public class ArticleRepository implements LoadArticlePort, CreateArticlePort {
 
     private static final String JSON_FILE_PATH = "data.json";
     private final ArticleMapper articleMapper;
@@ -48,7 +50,7 @@ public class ArticleRepository implements LoadArticlePort {
                     });
 
             return articleJsonEntities.stream()
-                    .map(entity -> articleMapper.toArticle(entity))
+                    .map(articleMapper::toArticle)
                     .toList();
 
         } catch (IOException e) {
@@ -62,5 +64,25 @@ public class ArticleRepository implements LoadArticlePort {
                 .filter(article -> article.id() == id)
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Article not found"));
+    }
+
+    @Override
+    public void createArticle(Article article) {
+        try {
+            List<Article> articles = findAll();
+
+            List<Article> newArticles = Stream.concat(articles.stream(), Stream.of(article))
+                    .toList();
+
+            List<ArticleJsonEntity> articleJsonEntities = newArticles.stream()
+                    .map(articleMapper::toArticleJsonEntity)
+                    .toList();
+
+            objectMapper.writeValue(
+                    Paths.get(JSON_FILE_PATH).toFile(),
+                    articleJsonEntities);
+        } catch (IOException e) {
+            throw new RuntimeException("Error writing data.json file", e);
+        }
     }
 }

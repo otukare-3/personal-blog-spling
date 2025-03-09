@@ -1,11 +1,16 @@
 package com.example.personal_blog.adapter.in.web;
 
+import java.time.LocalDate;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.personal_blog.adapter.in.web.form.ArticleCreateForm;
+import com.example.personal_blog.application.port.in.CreateArticleCommand;
+import com.example.personal_blog.application.port.in.CreateArticleUseCase;
 import com.example.personal_blog.application.port.in.GetArticleUseCase;
 
 import lombok.RequiredArgsConstructor;
@@ -16,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class AdminController {
 
     private final GetArticleUseCase getArticleUseCase;
+    private final CreateArticleUseCase createArticleUseCase;
 
     @GetMapping
     public String admin(Model model) {
@@ -28,5 +34,16 @@ public class AdminController {
         ArticleCreateForm articleCreateForm = new ArticleCreateForm("", "", "");
         model.addAttribute(articleCreateForm);
         return "admin/new";
+    }
+
+    @PostMapping("/new")
+    public String createArticle(ArticleCreateForm articleCreateForm) {
+        CreateArticleCommand command = new CreateArticleCommand(
+                articleCreateForm.title(),
+                LocalDate.parse(articleCreateForm.writeDate()),
+                articleCreateForm.content());
+
+        createArticleUseCase.createArticle(command);
+        return "redirect:/admin";
     }
 }
