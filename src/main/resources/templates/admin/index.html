@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thmeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{common/layout}" lang="ja">
+
+<main layout:fragment="content">
+    <div class="admin-header">
+        <h1 style="margin-bottom: 0;">Personal Blog</h1>
+        <a th:href="@{'/admin/new'}">+ Add</a>
+    </div>
+    <div class="grid-container-3col" th:each="article : ${articles}">
+        <span class="grid-item" th:text="${article.title}">My first article</span>
+        <a class="grid-item" th:href="@{'/admin/edit/' + ${article.id}}">Edit</a>
+        <a class="grid-item" th:href="@{'/admin/delete/' + ${article.id}}">Delete</a>
+    </div>
+</main>
+
+</html>
