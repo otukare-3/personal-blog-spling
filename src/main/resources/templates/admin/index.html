@@ -10,8 +10,26 @@
     <div class="grid-container-3col" th:each="article : ${articles}">
         <span class="grid-item" th:text="${article.title}">My first article</span>
         <a class="grid-item" th:href="@{'/admin/edit/' + ${article.id}}">Edit</a>
-        <a class="grid-item" th:href="@{'/admin/delete/' + ${article.id}}">Delete</a>
+        <a class="grid-item" href="#" th:data-id="${article.id}">Delete</a>
     </div>
+    <script>
+        document.querySelectorAll('.grid-item').forEach(item => {
+            item.addEventListener('click', event => {
+                if (item.textContent === 'Delete') {
+                    const id = item.getAttribute('data-id');
+                    if (confirm('削除してよいですか？')) {
+                        fetch('/admin/delete/' + id, {
+                            method: 'DELETE'
+                        }).then(response => {
+                            if (response.ok) {
+                                location.reload();
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    </script>
 </main>
 
 </html>

@@ -2,19 +2,22 @@ package com.example.personal_blog.adapter.in.web;
 
 import java.time.LocalDate;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.example.personal_blog.adapter.in.web.form.ArticleCreateForm;
 import com.example.personal_blog.application.domain.model.Article;
 import com.example.personal_blog.application.port.in.CreateArticleCommand;
 import com.example.personal_blog.application.port.in.CreateArticleUseCase;
+import com.example.personal_blog.application.port.in.DeleteArticleUseCase;
 import com.example.personal_blog.application.port.in.GetArticleUseCase;
 import com.example.personal_blog.application.port.in.UpdateArticleCommand;
 import com.example.personal_blog.application.port.in.UpdateArticleUseCase;
@@ -30,6 +33,7 @@ public class AdminController {
     private final GetArticleUseCase getArticleUseCase;
     private final CreateArticleUseCase createArticleUseCase;
     private final UpdateArticleUseCase updateArticleUseCase;
+    private final DeleteArticleUseCase deleteArticleUseCase;
 
     @GetMapping
     public String admin(Model model) {
@@ -87,5 +91,11 @@ public class AdminController {
         updateArticleUseCase.updateArticle(command);
 
         return "redirect:/admin";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public HttpHeaders deleteArticle(@PathVariable int id) {
+        deleteArticleUseCase.deleteArticle(id);
+        return new HttpHeaders();
     }
 }

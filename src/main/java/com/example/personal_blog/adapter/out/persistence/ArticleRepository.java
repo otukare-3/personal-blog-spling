@@ -2,6 +2,7 @@ package com.example.personal_blog.adapter.out.persistence;
 
 import com.example.personal_blog.application.domain.model.Article;
 import com.example.personal_blog.application.port.out.CreateArticlePort;
+import com.example.personal_blog.application.port.out.DeleteArticlePort;
 import com.example.personal_blog.application.port.out.LoadArticlePort;
 import com.example.personal_blog.application.port.out.UpdateArticlePort;
 import com.fasterxml.jackson.core.exc.StreamWriteException;
@@ -21,7 +22,7 @@ import java.util.stream.Stream;
  * 記事データを読み込むためのリポジトリクラス。
  */
 @Repository
-public class ArticleRepository implements LoadArticlePort, CreateArticlePort, UpdateArticlePort {
+public class ArticleRepository implements LoadArticlePort, CreateArticlePort, UpdateArticlePort, DeleteArticlePort {
 
     private static final String JSON_FILE_PATH = "data.json";
     private final ArticleMapper articleMapper;
@@ -109,5 +110,17 @@ public class ArticleRepository implements LoadArticlePort, CreateArticlePort, Up
         objectMapper.writeValue(
                 Paths.get(JSON_FILE_PATH).toFile(),
                 articleJsonEntities);
+    }
+
+    @Override
+    public void deleteArticle(int id) {
+        try {
+            List<Article> deletedArticles = findAll().stream()
+                    .filter(article -> article.id() != id)
+                    .toList();
+            writeArticleFile(deletedArticles);
+        } catch (IOException e) {
+            throw new RuntimeException("Error Delete data.json file", e);
+        }
     }
 }

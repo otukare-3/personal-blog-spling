@@ -36,7 +36,9 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.18.3'
 	implementation group: 'org.hibernate', name: 'hibernate-validator', version: '8.0.2.Final'
-
+	implementation 'org.springframework.security:spring-security-web'
+	implementation 'org.springframework.security:spring-security-config'
+	implementation 'org.springframework.security:spring-security-taglibs'
 }
 
 tasks.named('test') {
