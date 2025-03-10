@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thmeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{common/layout}" lang="ja">
+
+<main layout:fragment="content">
+    <h1>New Article</h1>
+    <form th:action="@{'/admin/edit/' + ${id}}" method="post" th:object="${articleCreateForm}">
+        <div>
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" th:field="*{title}" />
+            <span th:errors="*{title}"></span>
+        </div>
+        <div>
+            <label for="title">Write Date</label>
+            <input type="date" id="write-date" name="writeDate" th:field="*{writeDate}" />
+            <span th:errors="*{writeDate}"></span>
+        </div>
+        <div>
+            <label for="content">Content</label>
+            <textarea id="content" name="content" th:field="*{content}"></textarea>
+            <span th:errors="*{content}"></span>
+        </div>
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+</main>
+
+</html>

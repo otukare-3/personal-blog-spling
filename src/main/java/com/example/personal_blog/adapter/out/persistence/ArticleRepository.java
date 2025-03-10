@@ -3,7 +3,10 @@ package com.example.personal_blog.adapter.out.persistence;
 import com.example.personal_blog.application.domain.model.Article;
 import com.example.personal_blog.application.port.out.CreateArticlePort;
 import com.example.personal_blog.application.port.out.LoadArticlePort;
+import com.example.personal_blog.application.port.out.UpdateArticlePort;
+import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.stereotype.Repository;
@@ -18,7 +21,7 @@ import java.util.stream.Stream;
  * 記事データを読み込むためのリポジトリクラス。
  */
 @Repository
-public class ArticleRepository implements LoadArticlePort, CreateArticlePort {
+public class ArticleRepository implements LoadArticlePort, CreateArticlePort, UpdateArticlePort {
 
     private static final String JSON_FILE_PATH = "data.json";
     private final ArticleMapper articleMapper;
@@ -51,6 +54,7 @@ public class ArticleRepository implements LoadArticlePort, CreateArticlePort {
 
             return articleJsonEntities.stream()
                     .map(articleMapper::toArticle)
+                    .sorted((a1, a2) -> Integer.compare(a1.id(), a2.id()))
                     .toList();
 
         } catch (IOException e) {
@@ -74,15 +78,36 @@ public class ArticleRepository implements LoadArticlePort, CreateArticlePort {
             List<Article> newArticles = Stream.concat(articles.stream(), Stream.of(article))
                     .toList();
 
-            List<ArticleJsonEntity> articleJsonEntities = newArticles.stream()
-                    .map(articleMapper::toArticleJsonEntity)
-                    .toList();
-
-            objectMapper.writeValue(
-                    Paths.get(JSON_FILE_PATH).toFile(),
-                    articleJsonEntities);
+            writeArticleFile(newArticles);
         } catch (IOException e) {
             throw new RuntimeException("Error writing data.json file", e);
         }
+    }
+
+    @Override
+    public void updateArticle(Article article) {
+        try {
+            List<Article> articles = findAll().stream()
+                    .filter(a -> article.id() != a.id())
+                    .toList();
+
+            List<Article> newArticles = Stream.concat(articles.stream(), Stream.of(article))
+                    .toList();
+
+            writeArticleFile(newArticles);
+        } catch (IOException e) {
+            throw new RuntimeException("Error writing data.json file", e);
+        }
+    }
+
+    private void writeArticleFile(List<Article> target)
+            throws IOException, StreamWriteException, DatabindException {
+        List<ArticleJsonEntity> articleJsonEntities = target.stream()
+                .map(articleMapper::toArticleJsonEntity)
+                .toList();
+
+        objectMapper.writeValue(
+                Paths.get(JSON_FILE_PATH).toFile(),
+                articleJsonEntities);
     }
 }
